@@ -1,8 +1,9 @@
-import math
 from abc import ABC
+import time
 
 import numpy as np
 
+from plotter import plot
 from population import Population
 
 
@@ -15,6 +16,7 @@ class Optimizer(ABC):
 
         self.best_solution_history = []
         self.best_fitness_history = []
+        self.worst_fitness_history = []
         self.best_solution = None
         self.best_fitness = 0
 
@@ -59,7 +61,8 @@ class GeneticAlgorithm(Optimizer):
             self.log()
             self.iteration += 1
 
-        self.log()
+        plot(self.best_fitness_history, self.avg_fitness_history, self.worst_fitness_history, self.population_size,
+             self.crossover_op.p, self.mutation_op.p, './plots/plot')
         return self.best_solution
 
     def set_selection_method(self, selection):
@@ -79,8 +82,10 @@ class GeneticAlgorithm(Optimizer):
 
         best_in_generation = self.population[np.argmax(self.population.fitness)]
         best_in_generation_fitness = max(self.population.fitness)
+        worst_in_generation_fitness = min(self.population.fitness)
         self.best_solution_history.append(best_in_generation)
         self.best_fitness_history.append(best_in_generation_fitness)
+        self.worst_fitness_history.append(worst_in_generation_fitness)
 
         if best_in_generation_fitness > self.best_fitness:
             self.best_fitness = best_in_generation_fitness

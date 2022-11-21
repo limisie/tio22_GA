@@ -4,6 +4,8 @@ from operator import itemgetter
 
 import numpy as np
 
+from population import Population
+
 
 class Selection(ABC):
 
@@ -34,7 +36,7 @@ class RouletteWheelSelection(Selection):
 
     def _index_generator(self, population):
         fitness_sum = sum(population.fitness)
-        proportions = population.fitness / fitness_sum
+        proportions = np.array(population.fitness) / fitness_sum
 
         for _ in population:
             yield np.random.choice(range(len(population)), p=proportions)
@@ -81,3 +83,15 @@ def set_population_fitness(population):
         fitness.append(sum(chromosome))
     print(fitness)
     return fitness
+
+
+pop = Population(10, 4)
+pop.fitness = set_population_fitness(pop)
+print(pop)
+print()
+
+m_op = TournamentSelection(4)
+par = m_op.get_parents(pop)
+print(par)
+
+# random.sample(range(len(pop)), 4)

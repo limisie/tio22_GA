@@ -6,10 +6,10 @@ import scipy
 class Graph:
     def __init__(self, n=7, p=0.5, adjacent_matrix=None):
 
-        if adjacent_matrix:
-            self.graph = nx.from_numpy_matrix(adjacent_matrix)
-        else:
+        if adjacent_matrix is None:
             self.graph = nx.fast_gnp_random_graph(n, p)
+        else:
+            self.graph = nx.from_numpy_matrix(adjacent_matrix)
 
         self.adjacency_matrix = scipy.sparse.triu(nx.to_scipy_sparse_array(self.graph))
         self.color_map = []

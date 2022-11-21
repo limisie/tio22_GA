@@ -9,6 +9,7 @@ class GCP:
         self.chromatic_number = k
         self.graph = graph
         self.ff = ff
+        # self.max_cols = 5
 
     def get_solution_props(self):
         return len(self.graph), self.chromatic_number
@@ -48,9 +49,7 @@ class GCP:
                 return self.fitness_function_basic(solution)
 
     def fitness_function_basic(self, solution):
-        edges_size = len(self.graph.graph.edges)
-
-        return self.valid_edges_count(solution) / edges_size
+        return 1 / (self.non_valid_edges_count(solution) + 1)
 
     def fitness_function_balanced(self, solution):
         edges_size = len(self.graph.graph.edges)
@@ -64,12 +63,8 @@ class GCP:
         return (self.valid_edges_count(solution) / edges_size) + color_factor
 
     def fitness_function_less_colors(self, solution):
-        edges_size = len(self.graph.graph.edges)
         used_colors = len(set(solution))
-        return (self.valid_edges_count(solution) / edges_size) + 0.5 / used_colors
+        return 1 / (self.non_valid_edges_count(solution) + 1) * self.max_cols / used_colors
 
     def plot_graph(self):
         self.graph.show()
-
-    def get_max_gene_value(self):
-        return self.chromatic_number

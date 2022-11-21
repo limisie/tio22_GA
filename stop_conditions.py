@@ -45,4 +45,4 @@ class StopWhenFit(StopCondition):
         self.expected_fitness = expected_fitness
 
     def is_stop(self):
-        return self.optimizer.best_fitness <= self.expected_fitness
+        return self.optimizer.best_fitness >= self.expected_fitness
